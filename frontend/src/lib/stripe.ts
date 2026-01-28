@@ -32,8 +32,11 @@ export const getStripe = () => {
  */
 export const createPaymentIntent = async (amount: number, currency = "usd") => {
   try {
-    // Always use relative URL since frontend and backend are on the same server
-    const apiUrl = "/api/create-payment-intent";
+    // Use VITE_BACKEND_URL if set (for separate deployments), otherwise use relative URL
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+    const apiUrl = backendUrl 
+      ? `${backendUrl}/api/create-payment-intent`
+      : "/api/create-payment-intent";
     
     const response = await fetch(apiUrl, {
       method: "POST",
